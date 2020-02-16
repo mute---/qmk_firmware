@@ -23,11 +23,8 @@ extern keymap_config_t keymap_config;
 #define MAIN   0
 #define GAME   1
 #define EXT    3
-#define NAV    4
-#define FUN    5
+#define FUN    4
 #define ADJUST 10
-
-#define NAVESC LT(NAV, KC_ESC)
 
 #define FUNDEL LT(FUN, KC_DEL)
 #define FUNBSP LT(FUN, KC_BSPC)
@@ -39,39 +36,33 @@ extern keymap_config_t keymap_config;
 #define RGUIUP RGUI_T(KC_UP)
 #define EXTRGT LT(EXT, KC_RGHT)
 
+#define LCTLOS OSM(MOD_LCTL)
+#define LALTOS OSM(MOD_LALT)
+#define LGUIOS OSM(MOD_LGUI)
+#define GUIESC MT(MOD_LGUI, KC_ESC)
+
 enum os_dependent_codes {
-  LANG = SAFE_RANGE,
-  VD_NEXT,
+  VD_NEXT = SAFE_RANGE,
   VD_PREV
 };
 
 #define DEFCOMBO2(name, key1, key2) const uint16_t PROGMEM name[] = {key1, key2, COMBO_END};
-#define DEFCOMBO3(name, key1, key2, key3) const uint16_t PROGMEM name[] = {key1, key2, key3, COMBO_END};
-
-
-enum combos {
-  LANG_COMBO
-};
 
 DEFCOMBO2(backslash_combo, KC_SLSH, KC_RBRC)
-DEFCOMBO2(rbrc_combo, KC_P, KC_LBRC)
 DEFCOMBO2(grave_combo, KC_1, KC_2)
-DEFCOMBO3(lang_combo, KC_A, KC_S, KC_D)
 
 combo_t key_combos[COMBO_COUNT] = {
-  [LANG_COMBO] = COMBO_ACTION(lang_combo),
   COMBO(backslash_combo, KC_BSLS),
-  COMBO(rbrc_combo, KC_RBRC),
   COMBO(grave_combo, KC_GRV),
-  };
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [MAIN] = KEYMAP( \
   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,                      KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  \
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, \
-  NAVESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
+  GUIESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RBRC, \
-           MO(EXT), KC_LGUI, KC_LALT, KC_LCTL, SFTSPC, FUNDEL,   FUNBSP,  SFTENT,  RCTLLT,  RALTDN,  RGUIUP,  EXTRGT            \
+           MO(EXT), LGUIOS,  LALTOS,  LCTLOS,  SFTSPC, FUNDEL,   FUNBSP,  SFTENT,  RCTLLT,  RALTDN,  RGUIUP,  EXTRGT            \
 ),
 [GAME] = KEYMAP( \
   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,                      KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  \
@@ -81,24 +72,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
            KC_LCTL, KC_LGUI, KC_LALT, KC_LCTL, KC_SPC, FUNDEL,   FUNBSP,  SFTENT,  RCTLLT,  RALTDN,  RGUIUP,  EXTRGT            \
 ),
 [EXT] = KEYMAP( \
-  _______, _______, _______, _______, _______, _______,                   _______, KC_NLCK, KC_PSLS, KC_PAST, KC_PMNS, _______, \
+  KC_SLCK, _______, _______, _______, _______, _______,                   _______, KC_NLCK, KC_PSLS, KC_PAST, KC_PMNS, _______, \
   _______, _______, _______, _______, _______, KC_PSCR,                   _______, KC_P7,   KC_P8,   KC_P9,   _______, _______, \
   KC_CAPS, _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                   _______, KC_P4,   KC_P5,   KC_P6,   _______, _______, \
   _______, _______, _______, _______, KC_MUTE, KC_VOLD,                   _______, KC_P1,   KC_P2,   KC_P3,   _______, _______, \
            _______, _______, _______, _______, _______, _______, _______, _______, KC_P0,   KC_P0,   KC_PDOT, _______           \
 ),
-[NAV] = KEYMAP( \
-  _______, _______, _______, _______, _______, _______,                   KC_INS,  KC_DEL,  _______, _______, _______, _______, \
-  _______, _______, _______, _______, _______, _______,                   KC_PGUP, KC_HOME, KC_UP,   KC_END,  _______, _______, \
-  _______, _______, _______, VD_PREV, VD_NEXT, _______,                   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, \
-  _______, _______, _______, _______, _______, _______,                   _______, VD_PREV, KC_DOWN, VD_NEXT, _______, _______, \
-           _______, _______, _______, _______, _______, _______, _______, _______, KC_RCTL, KC_RALT, KC_RGUI, MO(EXT)           \
-),
 [FUN] = KEYMAP( \
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   \
   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,                    KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  \
-  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
-  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, VD_PREV, VD_NEXT, _______,                   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______, \
+  KC_INS,  _______, _______, _______, _______, _______,                   KC_HOME, KC_PGDN, KC_PGUP, KC_END,  _______, _______, \
            _______, _______, _______, _______, _______, _______, _______, _______, KC_RCTL, KC_RALT, KC_RGUI, MO(EXT)           \
 ),
 [ADJUST] = KEYMAP( \
@@ -135,34 +119,28 @@ uint32_t layer_state_set_user(uint32_t state) {
   return update_tri_layer_state(state, FUN, EXT, ADJUST);
 }
 
-void process_lang_code(bool is_mac) {
-  register_code(KC_LCTL);
-  if (is_mac) tap_code(KC_SPACE); else tap_code(KC_LSFT);
-  clear_mods();
-}
+// void process_lang_code(bool is_mac) {
+//   register_code(KC_LCTL);
+//   if (is_mac) tap_code(KC_SPACE); else tap_code(KC_LSFT);
+//   clear_mods();
+// }
 
-void process_combo_event(uint8_t combo_index, bool pressed) {
-  bool is_mac = keymap_config.swap_lctl_lgui;
+// void process_combo_event(uint8_t combo_index, bool pressed) {
+//   bool is_mac = keymap_config.swap_lctl_lgui;
 
-  switch(combo_index) {
-    case LANG_COMBO:
-      if (pressed) {
-        process_lang_code(is_mac);
-      }
-      break;
-  }
-}
+//   switch(combo_index) {
+//     case LANG_COMBO:
+//       if (pressed) {
+//         process_lang_code(is_mac);
+//       }
+//       break;
+//   }
+// }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   bool is_mac = keymap_config.swap_lctl_lgui;
 
   switch(keycode) {
-    case LANG:
-      if (record->event.pressed) {
-        process_lang_code(is_mac);
-        return false;
-      }
-
     case VD_NEXT:
       if (record->event.pressed) {
         register_code(KC_LCTL);
@@ -171,7 +149,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         clear_mods();
         return false;
       }
-    
     case VD_PREV:
       if (record->event.pressed) {
         register_code(KC_LCTL);

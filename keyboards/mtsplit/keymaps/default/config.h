@@ -18,8 +18,10 @@
 
 // place overrides here
 
-#define COMBO_COUNT 4
+#define COMBO_COUNT 2
 #define COMBO_TERM  25
 
 #define TAPPING_TERM_PER_KEY
 #define TAPPING_TERM 200
+
+#define ONESHOT_TIMEOUT 2000
