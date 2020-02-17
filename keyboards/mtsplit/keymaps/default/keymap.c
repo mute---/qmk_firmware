@@ -41,9 +41,11 @@ extern keymap_config_t keymap_config;
 #define LGUIOS OSM(MOD_LGUI)
 #define GUIESC MT(MOD_LGUI, KC_ESC)
 
-enum os_dependent_codes {
+enum custom_codes {
   VD_NEXT = SAFE_RANGE,
-  VD_PREV
+  VD_PREV,
+  PC_MAC,
+  PC_WIN
 };
 
 #define DEFCOMBO2(name, key1, key2) const uint16_t PROGMEM name[] = {key1, key2, COMBO_END};
@@ -87,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 [ADJUST] = KEYMAP( \
   DF(MAIN), DF(GAME), _______, _______, _______, RESET,                     RESET,   _______, _______, _______, DF(GAME), DF(MAIN), \
-  _______, _______,   _______, _______, _______, NK_TOGG,                   NK_TOGG, _______, _______, _______, _______,  _______,  \
+  PC_WIN,  PC_MAC,    _______, _______, _______, NK_TOGG,                   NK_TOGG, _______, _______, _______, PC_MAC,   PC_WIN ,  \
   _______, _______,   _______, _______, _______, CG_TOGG,                   CG_TOGG, _______, _______, _______, _______,  _______,  \
   _______, _______,   _______, _______, _______, _______,                   _______, _______, _______, _______, _______,  _______,  \
            _______,   _______, _______, _______, _______, _______, _______, _______, KC_RCTL, KC_RALT, KC_RGUI, MO(EXT)             \
@@ -137,6 +139,11 @@ uint32_t layer_state_set_user(uint32_t state) {
 //   }
 // }
 
+void toggleCtlSwap(void) {
+  keymap_config.swap_lctl_lgui = !keymap_config.swap_lctl_lgui;
+  keymap_config.swap_rctl_rgui = keymap_config.swap_lctl_lgui;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   bool is_mac = keymap_config.swap_lctl_lgui;
 
@@ -155,6 +162,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (!is_mac) register_code(KC_LGUI);
         tap_code(KC_LEFT);
         clear_mods();
+        return false;
+      }
+    case PC_MAC:
+      if (record->event.pressed) {
+        tap_code(KC_SLCK);
+        tap_code(KC_SLCK);
+        tap_code(KC_KP_2);
+        toggleCtlSwap();
+        return false;
+      }
+    case PC_WIN:
+      if (record->event.pressed) {
+        tap_code(KC_SLCK);
+        tap_code(KC_SLCK);
+        tap_code(KC_KP_1);
+        toggleCtlSwap();
         return false;
       }
   }
