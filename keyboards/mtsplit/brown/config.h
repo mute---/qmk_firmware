@@ -14,7 +14,7 @@
 */
 #define MATRIX_COLS 7
 #define MATRIX_ROW_PINS { F4, F5, F6, B2, B6 }
-#define MATRIX_COL_PINS { E6, D2, D3, B4, C6, D4, B5 }
+#define MATRIX_COL_PINS { E6, D2, D3, B4, C6, D7, B5 }
 #define UNUSED_PINS
 
 #define KEYMAP( \
