@@ -85,6 +85,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define PERMISSIVE_HOLD
 
+#define TAP_CODE_DELAY 125
+
 /* define if matrix has ghost (lacks anti-ghosting diodes) */
 //#define MATRIX_HAS_GHOST
 
